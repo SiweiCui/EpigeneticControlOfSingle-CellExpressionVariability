@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 
 
-Data = pyreadr.read_r("X&Y for Python.RData")
+Data = pyreadr.read_r("Donor31800_Signac_Python.RData")
 
 
 X_summary = Data["X_smo_sumy"]
 Y_summary = Data["Y_smo_sumy"]
-# X_rownames = Data["X_smo_rownames"]
+X_rownames = Data["X_smo_rownames"]
 X_colnames = Data["X_smo_colnames"]
 Y_rownames = Data["Y_smo_rownames"]
 Y_colnames = Data["Y_smo_colnames"]
@@ -22,12 +22,12 @@ X_shape1 = Data["X_shape1"].iloc[0, 0]
 X_shape2 = Data["X_shape2"].iloc[0, 0]
 Y_shape1 = Data["Y_shape1"].iloc[0, 0]
 Y_shape2 = Data["Y_shape2"].iloc[0, 0]
-train_index = Data["train_index"].iloc[1, :].tolist()
+train_index = (Data["train_index"].iloc[1, :] - 1).tolist()
 
 
 X = sp.coo_matrix( (X_summary["x"], (X_summary["i"]-1 , X_summary["j"]-1)), shape=(X_shape1, X_shape2) ).tocsr()
 Y = sp.coo_matrix( (Y_summary["x"], (Y_summary["i"]-1, Y_summary["j"]-1)), shape=(Y_shape1, Y_shape2) ).tocsr()
-# X.row = X_rownames["X_rownames"]
+X.row = X_rownames["X_smo_rownames"]
 X.col = X_colnames["X_smo_colnames"]
 Y.row = Y_rownames["Y_smo_rownames"]
 Y.col = Y_colnames["Y_smo_colnames"]
@@ -49,7 +49,7 @@ YtestF = pd.DataFrame(Y_test.toarray(),
 
 
 LGBMSmoothPredict = pd.DataFrame()
-i=0
+
 for gene in Y_colnames["Y_smo_colnames"]:
     print(np.where(Y_colnames["Y_smo_colnames"] == gene))
     
@@ -58,7 +58,5 @@ for gene in Y_colnames["Y_smo_colnames"]:
     lgbm_iter.fit( X_train.asfptype(), np.array(YtrainF[[gene]]).reshape(-1) )
     pred = lgbm_iter.predict(X_test.asfptype())
     LGBMSmoothPredict[gene] = pred
-    
-    
-  
+
   

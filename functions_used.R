@@ -317,6 +317,25 @@ RepeatSplit <- function(reptimes, X, Y, prop,
   
 }
 
+RepeatSplitFixedTrain <- function(reptimes, X, Y, train_index, 
+                                  metric.chosen = c("pearson", "spearman", "R2"),
+                                  method = "Lasso",
+                                  duiyingbiao = NULL,
+                                  k=10){
+  MetricinRepeatation <- data.frame(Gene = colnames(Y))
+  for (i in 1:reptimes) {
+    print(i)
+    train.index = train_index[i, ]
+    if(method == "Lasso"){PredRes = GetPredictionLASSO(X, Y, train.index, f = myic.glmnet)}
+    else if(method == "Match"){PredRes = GetPredictionwithCrspPeaksLASSO(X, Y, train.index, 
+                                                                         f=myic.glmnet, xuyaoduiyingbiao = duiyingbiao)}
+    else if(method == "KNN"){PredRes = GetPredictionKNN(k, X, Y, train.index)}
+    
+    MetricOneTime = Metrics(PredRes, Y[-train.index, ])
+    MetricinRepeatation <- cbind(MetricinRepeatation, MetricOneTime[, metric.chosen])
+  }
+  return(MetricinRepeatation)
+}
 
 
 #Gene Score

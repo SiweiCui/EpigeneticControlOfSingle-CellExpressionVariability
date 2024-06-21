@@ -5,11 +5,27 @@ dim(Xpf)
 
 
 # Repeating train-test split
-LassoRepeat <- RepeatSplit(reptimes = 5, X = X, Y = Y, prop = 0.7, method = "Lasso")
-LassoMatchRepeat <- RepeatSplit(reptimes = 5, X = X, Y = Y, prop = 0.7, method = "Match", duiyingbiao = crsp.list)
-LassoPFRepeat <- RepeatSplit(reptimes = 5, X = Xpf, Y = Y, prop = 0.7, method = "Lasso")
-KNNRepeat <- RepeatSplit(reptimes = 5, X = X, Y = Y, prop = 0.7, method = "KNN")
-
+LassoRepeat <- RepeatSplitFixedTrain(reptimes = 5,
+                                     X = X,
+                                     Y = Y,
+                                     train_index = train_index,
+                                     method = "Lasso")
+LassoMatchRepeat <- RepeatSplitFixedTrain(reptimes = 5,
+                                          X = X,
+                                          Y = Y,
+                                          train_index = train_index,
+                                          method = "Match",
+                                          duiyingbiao = crsp.list)
+LassoPFRepeat <- RepeatSplitFixedTrain(reptimes = 5,
+                                       X = Xpf,
+                                       Y = Y,
+                                       train_index = train_index,
+                                       method = "Lasso")
+KNNRepeat <- RepeatSplitFixedTrain(reptimes = 5,
+                                   X = X,
+                                   Y = Y,
+                                   train_index = train_index,
+                                   method = "KNN")
 
 # Gene score
 score_matrix = geneScorePara(pos, crsp.list, X, Y)
