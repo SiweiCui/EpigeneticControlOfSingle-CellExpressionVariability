@@ -2,11 +2,11 @@
 
 ## Data Availability
 
-Our data files are too big to upload to github. We upload the preprocessed and homogeneity-checked data to `Release`. 
+Our data files are too big to upload to github. We upload the preprocessed and homogeneity-checked data to `Releases`. 
 
-Each `Release` includes data that has been preprocessed and homogeneity checked, a list of index vectors indicating nearby peaks of genes, index used in train-test splits, and data for Python code.
+Each `Releases` includes data that has been preprocessed and homogeneity checked, a list of index vectors indicating nearby peaks of genes, index used in train-test splits, and data for Python code.
 
-More detailed infomation can be found in `Release` description.
+More detailed infomation can be found in `Releases` description.
 
 `HSPC_Donor31800`: 3000 cells, 206611 peaks and 9657 genes.
 
